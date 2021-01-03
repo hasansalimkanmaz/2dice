@@ -45,8 +45,8 @@ def convert_dice(image):
 	maxSaturation = 0
 	count = 0
 
-	while i < height:
-		while j < width:
+	while i < width:
+		while j < height:
 			pixel = image.getpixel((i,j))
 			if pixel[2] > maxSaturation:
 				maxSaturation = pixel[2]
