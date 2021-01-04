@@ -1,5 +1,6 @@
 from PIL import Image
 import sys
+import os
 
 # Create a Grayscale version of the image
 def convert_grayscale(image):
@@ -103,26 +104,27 @@ def convert_dice(image):
 def main():
 	# process input
 	input = sys.argv[1].strip()
-	delimiter = ""
-
-	if "/" in input:
-		delimiter = "/"
-	elif "\\" in input:
-		delimiter = "\\"
-
-	input = input.split(delimiter)
-	file = input[-1]
+	# delimiter = ""
+	#
+	# if "/" in input:
+	# 	delimiter = "/"
+	# elif "\\" in input:
+	# 	delimiter = "\\"
+	#
+	# input = input.split(delimiter)
+	file = os.path.basename(input)
+	dirname = os.path.dirname(input)
 	path = ""
 
-	if len(input) != 1:
-		path = delimiter
-
-	for i in range(len(input)-1):
-		path += input[i] + delimiter
+	# if len(input) != 1:
+	# 	path = delimiter
+	#
+	# for i in range(len(input)-1):
+	# 	path += input[i] + delimiter
 
 	try:
 		# Load Image (JPEG/JPG needs libjpeg to load)
-		original = Image.open(path + file)
+		original = Image.open(input)
 
 	except FileNotFoundError:
 		print(path + file)
@@ -133,14 +135,14 @@ def main():
 
 		# Convert to Grayscale and save
 		new = convert_grayscale(original)
-		new.save(path + 'gray' + suffix)
+		new.save(os.path.join(dirname, 'gray' + suffix))
 
 		# Load gray image
-		gray = Image.open(path + 'gray' + suffix)
+		gray = Image.open(os.path.join(dirname, 'gray' + suffix))
 
 		# Convert to dice and save
 		new = convert_dice(gray)
-		new.save(path + 'dice' + suffix)
+		new.save(os.path.join(dirname, 'dice' + suffix))
 
 if __name__ == "__main__":
 	main()
